@@ -43,12 +43,14 @@ https://www.youtube.com/channel/UCNV98n5rAXl89HzF6PTDczg<br />
 
 
 ![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%231.png)
-![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%232.png)
-![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%233.png)
-![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%234.png)
-![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%235.png)
-![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%236.png)
-![#1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%237.png)
+![#2](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%232.png)
+![#3](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%233.png)
+![#4](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%234.png)
+![#5](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%235.png)
+![#5-1](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%235-1.png)
+![#5-2](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%235-2.png)
+![#6](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%236.png)
+![#7](https://github.com/nft-utilz/MD_minting_website_smart_contract/blob/main/readme-images/%237.png)
 
 
 
