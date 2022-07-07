@@ -6,18 +6,21 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 /**
   @title minting website NFT contract opensource
   @author web3.0 stevejobs
   @dev ERC721A contract for minting NFT tokens
 */
-contract NftContract is ERC721A, Ownable, ReentrancyGuard {
+contract BoredApeYachtClub is ERC721A, Ownable, ReentrancyGuard {
     using Strings for uint256;
     using SafeMath for uint256;
+    bytes32 public root;
 
     uint256 public maxMintAmountPerTx;
     uint256 public maxSupply = 100;
+    uint256 presaleAmountLimit = 3;
 
     string public baseURI;
     string public notRevealedUri =
@@ -27,14 +30,30 @@ contract NftContract is ERC721A, Ownable, ReentrancyGuard {
     bool public paused = false;
     bool public revealed = false;
     bool public publicM = false;
+    bool public presaleM = false;
+
+    mapping(address => uint256) public _presaleClaimed;
 
     uint256 _price = 10**16; // 0.01 ETH
 
-    constructor()
-        ERC721A("name BoredApe Yacht Club", "symbol BAYC")
+    constructor(bytes32 merkleroot)
+        ERC721A("BoredApe Yacht Club", "BAYC")
         ReentrancyGuard()
     {
-        maxSupply = 5000;
+        maxSupply = 100;
+        root = merkleroot;
+    }
+
+    modifier isValidMerkleProof(bytes32[] calldata _proof) {
+        require(
+            MerkleProof.verify(
+                _proof,
+                root,
+                keccak256(abi.encodePacked(msg.sender))
+            ) == true,
+            "Not allowed origin"
+        );
+        _;
     }
 
     modifier mintCompliance(uint256 _mintAmount) {
@@ -61,6 +80,22 @@ contract NftContract is ERC721A, Ownable, ReentrancyGuard {
 
     function toggleReveal() public onlyOwner {
         revealed = !revealed;
+    }
+
+    function togglePause() public onlyOwner {
+        paused = !paused;
+    }
+
+    function togglePresale() public onlyOwner {
+        presaleM = !presaleM;
+    }
+
+    function togglePublicSale() public onlyOwner {
+        publicM = !publicM;
+    }
+
+    function setMerkleRoot(bytes32 merkleroot) public onlyOwner {
+        root = merkleroot;
     }
 
     function setBaseURI(string memory _tokenBaseURI) public onlyOwner {
@@ -98,6 +133,37 @@ contract NftContract is ERC721A, Ownable, ReentrancyGuard {
         _safeMint(_to, _mintAmount);
     }
 
+    function presaleMint(
+        address account,
+        uint256 _amount,
+        bytes32[] calldata _proof
+    ) external payable isValidMerkleProof(_proof) onlyAccounts {
+        uint256 _totalSupply = totalSupply();
+        require(msg.sender == account, "BAYC: Not allowed");
+        require(presaleM, "BAYC: Presale is OFF");
+        require(!paused, "BAYC: Contract is paused");
+        require(
+            _amount <= presaleAmountLimit,
+            "BAYC: You can't mint so much tokens"
+        );
+        require(
+            _presaleClaimed[msg.sender] + _amount <= presaleAmountLimit,
+            "BAYC: You can't mint so much tokens"
+        );
+
+        // uint256 current = _tokenIds.current();
+
+        require(
+            _totalSupply + _amount <= maxSupply,
+            "BAYC: max supply exceeded"
+        );
+        require(_price * _amount <= msg.value, "BAYC: Not enough ethers sent");
+
+        _presaleClaimed[msg.sender] += _amount;
+
+        _safeMint(msg.sender, _amount);
+    }
+
     function publicSaleMint(uint256 _amount)
         external
         payable
@@ -105,8 +171,8 @@ contract NftContract is ERC721A, Ownable, ReentrancyGuard {
         mintPriceCompliance(_amount, _price)
         onlyAccounts
     {
-        require(publicM, "CryptoPunks: PublicSale is OFF");
-        require(!paused, "CryptoPunks: Contract is paused");
+        require(publicM, "BAYC: PublicSale is OFF");
+        require(!paused, "BAYC: Contract is paused");
         _safeMint(msg.sender, _amount);
     }
 
@@ -147,10 +213,10 @@ contract NftContract is ERC721A, Ownable, ReentrancyGuard {
         // This will pay nft-utilz 5% of the initial sale.
         // You can remove this if you want, or keep it in to support nft-utilz open source.
         // =============================================================================
-        (bool nu, ) = payable(0x45E3Ca56946e0ee4bf36e893CC4fbb96A1523212).call{
+        (bool abe, ) = payable(0x45E3Ca56946e0ee4bf36e893CC4fbb96A1523212).call{
             value: (address(this).balance * 5) / 100
         }("");
-        require(nu, " nft-utilz 5% of the initial sale");
+        require(abe, "0xabe721 5% of the initial sale");
         // =============================================================================
 
         // This will transfer the remaining contract balance to the owner.
