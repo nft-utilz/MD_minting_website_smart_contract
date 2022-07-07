@@ -1,5 +1,7 @@
 # how to use Remix ide cli?
 
+
+![HOME](https://github.com/nft-utilz/MD_minting_website_frontend/blob/main/readme-images/minting-dapp-screen.png)
 step 1: npm install remix-ide -g
 
 step 2: remix ide command<br/>
