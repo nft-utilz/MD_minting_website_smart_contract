@@ -19,7 +19,7 @@ contract BoredApeYachtClub is ERC721A, Ownable, ReentrancyGuard {
     using SafeMath for uint256;
     bytes32 public root;
 
-    uint256 public maxMintAmountPerTx;
+    uint256 public maxMintAmountPerTx = 3;
     uint256 public maxSupply = 100;
     uint256 presaleAmountLimit = 3;
 
@@ -37,12 +37,10 @@ contract BoredApeYachtClub is ERC721A, Ownable, ReentrancyGuard {
 
     uint256 _price = 10**16; // 0.01 ETH
 
-    constructor(bytes32 merkleroot)
-        ERC721A("BoredApe Yacht Club", "BAYC")
-        ReentrancyGuard()
-    {
+    // constructor(bytes32 merkleroot)
+    constructor() ERC721A("BoredApe Yacht Club", "BAYC") ReentrancyGuard() {
         maxSupply = 100;
-        root = merkleroot;
+        // root = merkleroot;
     }
 
     modifier isValidMerkleProof(bytes32[] calldata _proof) {
